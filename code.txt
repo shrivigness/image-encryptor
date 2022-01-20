@@ -1,0 +1,160 @@
+#include<fstream>
+#include<iostream>
+using namespace std;
+
+int cipher[40][40],key[40][40];
+
+void print(int arr[40][40],int n)
+{
+    int i,j;
+    for(i=0;i<n;i++)
+    {
+        for(j=0;j<n;j++)
+            cout<<arr[i][j]<<' ';
+        cout<<endl;
+    }
+}
+
+void split(int arr[][5],int n)
+{
+    int i,j,a,b;
+    for(i=0;i<n;i++)
+    {
+        a = 2*i;
+        for(j=0;j<n;j++)
+        {
+            b = 2*j;
+            if(arr[i][j] == 1)
+            { 
+                cipher[a][b]     = 0;
+                cipher[a+1][b]   = 1;
+                cipher[a][b+1]   = 1;
+                cipher[a+1][b+1] = 0;
+            }
+            else
+            {
+                cipher[a][b]     = 1;
+                cipher[a+1][b]   = 0;
+                cipher[a][b+1]   = 0;
+                cipher[a+1][b+1] = 1;
+            }
+        }
+    }
+    for(i=0;i<n;i++)
+    {
+        a = 2*i;
+        for(j=0;j<n;j++)
+        {
+            b = 2*j;
+            if(arr[i][j] == 1)
+            { 
+                key[a][b]     = 1;
+                key[a+1][b]   = 0;
+                key[a][b+1]   = 0;
+                key[a+1][b+1] = 1;
+            }
+            else
+            {
+                key[a][b]     = 1;
+                key[a+1][b]   = 0;
+                key[a][b+1]   = 0;
+                key[a+1][b+1] = 1;
+            }
+        }
+    }
+}
+
+int main()
+{
+    int n,i,j;
+    n=5;
+    
+    int a[5][5],b[5][5];
+    
+	fstream infile,cp,k; 
+    infile.open("cd..\\afile.dat"); 
+    cp.open("cd..\\cipher.dat");
+    k.open("cd..\\Key.dat");
+ 
+    for(i=0;i<5;i++)
+        for(j=0;j<5;j++)
+            infile>>a[i][j];
+
+    split(a,n);
+    
+    for(i=0;i<10;i++)
+    {
+        for(j=0;j<10;j++)
+            cp<<cipher[i][j]<<' ';
+    cp<<endl;
+    }
+			
+    for(i=0;i<10;i++)
+	{
+        for(j=0;j<10;j++)
+            k<<key[i][j]<<' ';
+    k<<endl;
+    }
+}
+
+
+
+
+
+
+
+
+COMBINE
+
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+int cipher[10][10],key[10][10];
+ 
+void combine(int arr[][5],int n)
+{
+    int i,j,a,b;
+    for(i=0;i<2*n;i+=2)
+    {
+        a = i/2;
+		for(j=0;j<2*n;j+=2)
+        {
+            b = j/2;
+			if(key[i][j] == 1 && key[i+1][j+1] == 1 && cipher[i+1][j] == 1 && cipher[i][j+1] == 1)
+                arr[a][b] = 1;
+            else
+                arr[a][b] = 0;
+    	}
+	}
+}
+
+int main ()
+{
+    
+   int data[5][5],i,j;
+
+
+   fstream cp,k,b; 
+   cp.open("cd..\\cipher.dat"); 
+   k.open("cd..\\Key.dat"); 
+   b.open("cd..\\final.dat"); 
+ 
+    for(i=0;i<10;i++)
+        for(j=0;j<10;j++)
+            cp>>cipher[i][j];
+    
+    for(i=0;i<10;i++)
+        for(j=0;j<10;j++)
+            k>>key[i][j];
+
+   combine(data,10);
+   
+   for(i=0;i<5;i++)
+    {
+        for(j=0;j<5;j++)
+            b<<data[i][j]<<' ';
+    b<<endl;
+    }
+    
+}

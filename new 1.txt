@@ -1,0 +1,23 @@
+
+>> BW = imbinarize(B);
+??? Undefined function or method 'imbinarize' for input arguments of type 'uint8'.
+ 
+>> w = im2bw(X,map,0.5);
+??? Undefined function or variable 'X'.
+ 
+>> w = im2bw(I,map,0.5);
+??? Undefined function or variable 'map'.
+ 
+>> [X,map] = imread('image.png');
+imshow(X,map);
+title('Original indexed image')
+Warning: Image is too big to fit on screen; displaying at 33% 
+> In imuitools\private\initSize at 73
+  In imshow at 262
+>> bw = im2bw(X,map,0.5);
+imshow(bw)
+title('Output of im2bw')
+Warning: Image is too big to fit on screen; displaying at 33% 
+> In imuitools\private\initSize at 73
+  In imshow at 262
+>> 
